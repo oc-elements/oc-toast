@@ -1,69 +1,83 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
 
 <dom-module id="oc-toast">
-  <template>
-    <style>
-      #container {
-        padding: 100px;
-        border: 1px solid gray;
-        --paper-toast-background-color: [[_color]];
-        --paper-toast-color: white;
-      }
-    </style>
-    <paper-toast id="toast" class="fit-bottom" text="[[message]]">
-        <template is="dom-if" is="[[_closeButton]]">
-            <paper-button onclick="toast.toggle()" class="yellow-button">Close</paper-button>
-        </template>
-    </paper-toast>
-  </template>
+    <template>
+        <style>
+            #toast {
+                --paper-toast-color: white;
+            }
 
-  <script>
-    /**
-     * `oc-toast`
-     * Notification to user
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-    class OcToast extends Polymer.Element {
-      static get is() { return 'oc-toast'; }
-      static get properties() {
-          return {
+            .yellow-button {
+                text-transform: none;
+                color: #eeff41;
+            }
+        </style>
+        <paper-toast id="toast" class="fit-bottom">
+            <template is="dom-if" if="[[_closeButton]]">
+                <paper-button on-tap="_close" class="yellow-button">Close</paper-button>
+            </template>
+        </paper-toast>
+    </template>
 
-              //suxcess and failure
-              type: {
-                  type: String,
-                  observer: '_fillToast'
-              },
-              _duration: number,
-              message: String,
-              _closeButton: {
-                  type:Boolean,
-                  value: false
-              },
-              _color: String
-          };
-      }
+    <script>
+        /**
+         * `oc-toast`
+         * Notification to user
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class OcToast extends Polymer.Element {
+            static get is() { return 'oc-toast'; }
+            static get properties() {
+                return {
+                    _duration: {
+                        type: Number,
+                        value : 3000
+                    },
+                    _closeButton: {
+                        type:Boolean,
+                        value: false
+                    },
+                    _color: String
+                };
+            }
 
 
-      _fillToast(type){
-          if(type === "success"){
-              this._color = "green";
-              _duration = 3;
+            ready() {
+                super.ready();
+            }
 
-          }else if (type === "failure"){
-              this._color = "red";
-              _duration = 0;
-              _closeButton = true;
-          }
-      }
+            success(message){
+                this.$.toast.style['--paper-toast-background-color'] = 'green';
+                this.$.toast.updateStyles();
+                this._closeButton = false;
+                this._duration = 3000;
+                this.$.toast.show({text: message, duration : this._duration});
+            }
 
-      open(){
-          this.$.toast.open()
-      }
-    }
+            successStay(message){
+                this.$.toast.style['--paper-toast-background-color'] = 'green';
+                this.$.toast.updateStyles();
+                this._duration = 0;
+                this._closeButton = true;
+                this.$.toast.show({text: message, duration : this._duration});
+            }
 
-    window.customElements.define(OcToast.is, OcToast);
-  </script>
+            failed(message){
+                this.$.toast.style['--paper-toast-background-color'] = 'red';
+                this.$.toast.updateStyles();
+                this._duration = 0;
+                this._closeButton = true;
+                this.$.toast.show({text: message, duration : this._duration});
+            }
+            _close(){
+                this.$.toast.toggle();
+            }
+        }
+
+        window.customElements.define(OcToast.is, OcToast);
+    </script>
 </dom-module>
