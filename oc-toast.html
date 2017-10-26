@@ -1,0 +1,69 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="oc-toast">
+  <template>
+    <style>
+      #container {
+        padding: 100px;
+        border: 1px solid gray;
+        --paper-toast-background-color: [[_color]];
+        --paper-toast-color: white;
+      }
+    </style>
+    <paper-toast id="toast" class="fit-bottom" text="[[message]]">
+        <template is="dom-if" is="[[_closeButton]]">
+            <paper-button onclick="toast.toggle()" class="yellow-button">Close</paper-button>
+        </template>
+    </paper-toast>
+  </template>
+
+  <script>
+    /**
+     * `oc-toast`
+     * Notification to user
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class OcToast extends Polymer.Element {
+      static get is() { return 'oc-toast'; }
+      static get properties() {
+          return {
+
+              //suxcess and failure
+              type: {
+                  type: String,
+                  observer: '_fillToast'
+              },
+              _duration: number,
+              message: String,
+              _closeButton: {
+                  type:Boolean,
+                  value: false
+              },
+              _color: String
+          };
+      }
+
+
+      _fillToast(type){
+          if(type === "success"){
+              this._color = "green";
+              _duration = 3;
+
+          }else if (type === "failure"){
+              this._color = "red";
+              _duration = 0;
+              _closeButton = true;
+          }
+      }
+
+      open(){
+          this.$.toast.open()
+      }
+    }
+
+    window.customElements.define(OcToast.is, OcToast);
+  </script>
+</dom-module>
