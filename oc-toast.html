@@ -7,7 +7,10 @@
             #toast {
                 --paper-toast-color: white;
             }
-
+            #dashboard-toast {
+                left:256px !important;;
+                max-width:calc(100% - 256px) !important;
+            }
             .yellow-button {
                 text-transform: none;
                 color: #eeff41;
@@ -51,7 +54,7 @@
             }
 
             success(message){
-                this.$.toast.style['--paper-toast-background-color'] = 'green';
+                this.$.toast.style['--paper-toast-background-color'];
                 this.$.toast.updateStyles();
                 this._closeButton = false;
                 this._duration = 3000;
@@ -59,7 +62,7 @@
             }
 
             successStay(message){
-                this.$.toast.style['--paper-toast-background-color'] = 'green';
+                this.$.toast.style['--paper-toast-background-color'];
                 this.$.toast.updateStyles();
                 this._duration = 0;
                 this._closeButton = true;
