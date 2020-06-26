@@ -74,7 +74,14 @@
                 this._duration = 0;
                 this._closeButton = true;
                 this.$.toast.show({ text: message, duration: this._duration });
-            }
+			}
+			info(message) {
+                this.$.toast.style['background-color'] = '#305bab';
+                this.$.toast.updateStyles();
+                this._duration = 5000;
+                this._closeButton = true;
+                this.$.toast.show({ text: message, duration: this._duration });
+			}
             _close() {
                 this.$.toast.toggle();
             }
